@@ -23,100 +23,100 @@ agent = create_agent(
 )
 """
 
-# # 1.model参数 - 模型配置
-# from langchain.agents import create_agent
-# from langchain.chat_models import init_chat_model
-#
-# # 方式 1：传字符串（最常用）
-# # 推荐使用方式 1（传字符串）。create_agent() 内部会自动处理模型初始化、工具绑定、结构化输出等逻辑。方式 2 适合你需要在 Agent 之外也使用同一个模型实例的场景。
-# # create_agent 内部会调用 init_chat_model() 处理
-# agent = create_agent(
-#     model="deepseek:deepseek-v4-flash",
-#     system_prompt="你是菜鸟教程 RUNOOB 的助手",
-# )
-#
-# # 方式 2：传已构建好的模型实例
-# # 适合需要精细控制模型参数的场景
-# model = init_chat_model("deepseek:deepseek-v4-flash", temperature=0.3, max_tokens=500)
-# agent = create_agent(
-#     model=model,
-#     system_prompt="你是菜鸟教程 RUNOOB 的助手",
-# )
-#
-# # 方式 3：传已绑定工具的模型实例
-# # less common，通常让 create_agent 自己管理工具绑定
-# model_with_tools = init_chat_model("deepseek:deepseek-v4-flash").bind_tools([...])
+# 1.model参数 - 模型配置
+from langchain.agents import create_agent
+from langchain.chat_models import init_chat_model
+
+# 方式 1：传字符串（最常用）
+# 推荐使用方式 1（传字符串）。create_agent() 内部会自动处理模型初始化、工具绑定、结构化输出等逻辑。方式 2 适合你需要在 Agent 之外也使用同一个模型实例的场景。
+# create_agent 内部会调用 init_chat_model() 处理
+agent = create_agent(
+    model="deepseek:deepseek-v4-flash",
+    system_prompt="你是菜鸟教程 RUNOOB 的助手",
+)
+
+# 方式 2：传已构建好的模型实例
+# 适合需要精细控制模型参数的场景
+model = init_chat_model("deepseek:deepseek-v4-flash", temperature=0.3, max_tokens=500)
+agent = create_agent(
+    model=model,
+    system_prompt="你是菜鸟教程 RUNOOB 的助手",
+)
+
+# 方式 3：传已绑定工具的模型实例
+# less common，通常让 create_agent 自己管理工具绑定
+model_with_tools = init_chat_model("deepseek:deepseek-v4-flash").bind_tools([...])
 
 
 
-# # 2.tools参数 - 工具列表
-# from langchain.tools import tool
-# from langchain.agents import create_agent
-#
-# # 格式 1：@tool 装饰的函数（最常用）
-# @tool
-# def search_course(keyword: str) -> str:
-#     """搜索菜鸟教程课程"""
-#     return f"搜索结果：{keyword} 相关课程"
-#
-#
-# # 格式 2：Pydantic BaseModel 类
-# from pydantic import BaseModel, Field
-#
-# class WeatherQuery(BaseModel):
-#     """查询天气"""
-#     city: str = Field(description="城市名称")
-#
-#
-# # 格式 3：字典（描述远程工具或内置工具）
-# mcp_tool = {
-#     "type": "mcp",
-#     "server_label": "weather_server",
-#     "server_url": "https://weather.example.com/sse",
-#     "allowed_tools": ["get_forecast"],
-# }
-#
-# # 混合使用
-# agent = create_agent(
-#     model="deepseek:deepseek-v4-flash",
-#     tools=[search_course, WeatherQuery, mcp_tool],
-# )
+# 2.tools参数 - 工具列表
+from langchain.tools import tool
+from langchain.agents import create_agent
+
+# 格式 1：@tool 装饰的函数（最常用）
+@tool
+def search_course(keyword: str) -> str:
+    """搜索菜鸟教程课程"""
+    return f"搜索结果：{keyword} 相关课程"
+
+
+# 格式 2：Pydantic BaseModel 类
+from pydantic import BaseModel, Field
+
+class WeatherQuery(BaseModel):
+    """查询天气"""
+    city: str = Field(description="城市名称")
+
+
+# 格式 3：字典（描述远程工具或内置工具）
+mcp_tool = {
+    "type": "mcp",
+    "server_label": "weather_server",
+    "server_url": "https://weather.example.com/sse",
+    "allowed_tools": ["get_forecast"],
+}
+
+# 混合使用
+agent = create_agent(
+    model="deepseek:deepseek-v4-flash",
+    tools=[search_course, WeatherQuery, mcp_tool],
+)
 
 # 传 None 或空列表表示 Agent 无工具可用，此时它就是一个纯粹的对话模型：
-# from langchain.agents import create_agent
-# from langchain.messages import HumanMessage
-#
-# # 无工具 Agent——等价于直接调用模型
-# agent = create_agent(
-#     model="deepseek:deepseek-v4-flash",
-#     tools=None,
-#     system_prompt="你是菜鸟教程 RUNOOB 的助手",
-# )
-#
-# result = agent.invoke({
-#     "messages": [HumanMessage(content="Python 适合零基础学习吗？")]
-# })
-# print(result["messages"][-1].content)
+from langchain.agents import create_agent
+from langchain.messages import HumanMessage
+
+# 无工具 Agent——等价于直接调用模型
+agent = create_agent(
+    model="deepseek:deepseek-v4-flash",
+    tools=None,
+    system_prompt="你是菜鸟教程 RUNOOB 的助手",
+)
+
+result = agent.invoke({
+    "messages": [HumanMessage(content="Python 适合零基础学习吗？")]
+})
+print(result["messages"][-1].content)
 
 
-# # 3.system_prompt 参数——系统提示。定义 Agent 的行为角色和约束规则。支持字符串和 SystemMessage 对象。
-# from langchain.agents import create_agent
-# from langchain.messages import SystemMessage
-#
-# # 方式 1：字符串（简单直接）
-# agent = create_agent(
-#     model="deepseek:deepseek-v4-flash",
-#     system_prompt="你是菜鸟教程 RUNOOB 的学习顾问。回答要简洁，不超过 100 字。",
-# )
-#
-# # 方式 2：SystemMessage 对象（可在多个 Agent 间复用）
-# system_msg = SystemMessage(
-#     content="你是菜鸟教程 RUNOOB 的学习顾问。回答要简洁，不超过 100 字。"
-# )
-# agent = create_agent(
-#     model="deepseek:deepseek-v4-flash",
-#     system_prompt=system_msg,
-# )
+# 3.system_prompt 参数——系统提示。定义 Agent 的行为角色和约束规则。支持字符串和 SystemMessage 对象。
+from langchain.agents import create_agent
+from langchain.messages import SystemMessage
+
+# 方式 1：字符串（简单直接）
+agent = create_agent(
+    model="deepseek:deepseek-v4-flash",
+    system_prompt="你是菜鸟教程 RUNOOB 的学习顾问。回答要简洁，不超过 100 字。",
+)
+
+# 方式 2：SystemMessage 对象（可在多个 Agent 间复用）
+system_msg = SystemMessage(
+    content="你是菜鸟教程 RUNOOB 的学习顾问。回答要简洁，不超过 100 字。"
+)
+agent = create_agent(
+    model="deepseek:deepseek-v4-flash",
+    system_prompt=system_msg,
+)
 
 
 
