@@ -231,6 +231,12 @@ def inner_middleware(request, handler):
     print("  [内层] 结束")
     return result
 
+
+agent = create_agent(
+    model=model,
+    middleware=[outer_middleware, inner_middleware]  # 列表顺序 = 从外到内的顺序
+)
+
 """
     执行顺序：
     [外层] 开始
