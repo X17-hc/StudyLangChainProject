@@ -1,4 +1,26 @@
-# .gitignore
+# 环境与密钥
 .env
+*.pem
+*.key
+
+# Python
 __pycache__/
 *.pyc
+.venv/
+venv/
+
+# Java / Node（后续）
+target/
+node_modules/
+dist/
+
+# IDE
+.idea/
+*.iml
+
+# InsightHub 本机 MySQL 运行时数据（体积大，勿提交）
+deploy/runtime/
+
+# 本地向量库等数据
+my_knowledge_db/
+*.sqlite3

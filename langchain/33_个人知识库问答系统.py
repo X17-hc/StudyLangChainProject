@@ -108,7 +108,7 @@ class KnowledgeBase:
 
 # ========== 创建知识库并添加示例数据 ==========
 
-kb = KnowledgeBase("./my_knowledge_db")
+kb = KnowledgeBase("../my_knowledge_db")
 
 # 添加一些示例知识
 kb.add_text(
