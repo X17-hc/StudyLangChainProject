@@ -3,7 +3,9 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/deepAgent/基础篇/AgentSeek/research_deepagent/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/deepAgent/基础篇/AgentSeek/research_deepagent/.venv" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.14 (TEST)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
