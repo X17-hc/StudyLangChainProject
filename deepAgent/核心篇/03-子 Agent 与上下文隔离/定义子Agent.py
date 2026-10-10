@@ -23,7 +23,7 @@ research_subagent = {
 
 注意：返回结果控制在 500 字以内，只返回核心发现。""",  # 必填：子 Agent 自己的指令
     "tools": [internet_search], # 可选，默认继承；显式指定后完全替换（不合并）
-    "skills": ["/skills/research/"],     # 可选，不继承主 Agent；指定后独立运行
+    "04-skills": ["/04-skills/research/"],     # 可选，不继承主 Agent；指定后独立运行
 }
 
 agent = create_deep_agent(
